@@ -32,10 +32,10 @@ public class SourceTwitterTweetsOverToKafka {
 		KafkaProducer<String, String> kafkaProducer = kafkaProducerFactory.createKafkaProducer();
 
 		// Loop to send tweets to Kafka
-		consumeTweetsAndPublishOverToKafka(twitterClient);
+		consumeTweetsAndPublishOverToKafka(twitterClient, kafkaProducer);
 	}
 
-	private void consumeTweetsAndPublishOverToKafka(Client twitterClient) {
+	private void consumeTweetsAndPublishOverToKafka(Client twitterClient, KafkaProducer<String, String> kafkaProducer) {
 		while (!twitterClient.isDone()) {
 			String msg = null;
 			try {
