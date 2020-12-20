@@ -7,16 +7,18 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 
+import com.poc.util.Constants;
+
 
 public class KafkaDemoProducer {
 
 	public static void main(String[] args) {
 
-        String bootstrapServers = "127.0.0.1:9092";
+//        String bootstrapServers = "127.0.0.1:9092";
 
         // create Producer properties
         Properties properties = new Properties();
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, Constants.BOOTSTRAP_SERVERS);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 
@@ -25,7 +27,7 @@ public class KafkaDemoProducer {
 
         // create a producer record
         ProducerRecord<String, String> record =
-                new ProducerRecord<String, String>("first_topic", "hello world");
+                new ProducerRecord<String, String>(Constants.FIRST_TOPIC, "hello world");
 
         // send data - asynchronous
         producer.send(record);
