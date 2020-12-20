@@ -7,7 +7,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 
-import com.poc.util.Constants;
+import com.poc.util.POCConstants;
 
 
 public class KafkaDemoProducer {
@@ -18,7 +18,7 @@ public class KafkaDemoProducer {
 
         // create Producer properties
         Properties properties = new Properties();
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, Constants.BOOTSTRAP_SERVERS);
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, POCConstants.BOOTSTRAP_SERVERS);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 
@@ -27,7 +27,7 @@ public class KafkaDemoProducer {
 
         // create a producer record
         ProducerRecord<String, String> record =
-                new ProducerRecord<String, String>(Constants.FIRST_TOPIC, "hello world");
+                new ProducerRecord<String, String>(POCConstants.FIRST_TOPIC, "hello world");
 
         // send data - asynchronous
         producer.send(record);

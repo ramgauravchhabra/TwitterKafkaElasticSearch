@@ -8,7 +8,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.poc.util.Constants;
+import com.poc.util.POCConstants;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -26,17 +26,17 @@ public class KafkaDemoConsumer {
 
 	        // create consumer configs
 	        Properties properties = new Properties();
-	        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, Constants.BOOTSTRAP_SERVERS);
+	        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, POCConstants.BOOTSTRAP_SERVERS);
 	        properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 	        properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-	        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, Constants.MY_FIRST_APPLICATION);
+	        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, POCConstants.MY_FIRST_APPLICATION);
 	        properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
 	        // create consumer
 	        KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
 
 	        // subscribe consumer to our topic(s)
-	        consumer.subscribe(Arrays.asList(Constants.FIRST_TOPIC));
+	        consumer.subscribe(Arrays.asList(POCConstants.FIRST_TOPIC));
 
 	        // poll for new data
 	        while(true){
