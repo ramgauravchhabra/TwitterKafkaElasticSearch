@@ -1,0 +1,18 @@
+#Command to run from bin to see how much records published and how much consumed in actual : To notice the lag
+# describe the group now
+kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group my-first-application
+
+Sample Output
+GROUP                TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                                          HOST            CLIENT-ID
+my-first-application first_topic     0          8               8               0               consumer-my-first-application-1-afeec440-9e7e-44c1-ac62-39de94734580 /192.168.1.17   consumer-my-first-application-1
+my-first-application first_topic     1          8               8               0               consumer-my-first-application-1-afeec440-9e7e-44c1-ac62-39de94734580 /192.168.1.17   consumer-my-first-application-1
+my-first-application first_topic     2          15              15              0               consumer-my-first-application-1-afeec440-9e7e-44c1-ac62-39de94734580 /19
+
+
+========================================== SCENARIO 2 ==========================================
+Published/Produced 10 messages but no consumer running, hence lag
+GROUP                TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID
+my-first-application first_topic     0          8               11              3               -               -               -
+my-first-application first_topic     1          8               10              2               -               -               -
+my-first-application first_topic     2          15              20              5               -               -               -
+========================================== SCENARIO 2 ==========================================
