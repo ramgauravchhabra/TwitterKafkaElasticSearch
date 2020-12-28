@@ -1,0 +1,9 @@
+// Can be get from Producer Config mentioned in Apache Kafka documentation
+// Create Producer Properties
+
+// Create the producer
+
+// Create ProducerRecord
+// In ProducerRecord we can mention which Topic, Partition, Key, Value it need to go
+
+// Send Data
