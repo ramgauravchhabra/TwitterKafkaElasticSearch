@@ -1,4 +1,4 @@
-package com.kafka.producer.consumer;
+package com.kafka.twitter.kafka.elastic.search;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
