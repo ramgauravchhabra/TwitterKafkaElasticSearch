@@ -1,0 +1,5 @@
+consumer.wakeup() : Interupt Consumer
+seek and assign
+	- No need of using consumer group id
+	- No need to subscribe to any specific topic
+	- Assign and Seek are mostly used to replay data or fetch a specific message
