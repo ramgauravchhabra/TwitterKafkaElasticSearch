@@ -4,9 +4,13 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 
 import com.poc.util.KafkaProducerFactory;
+import com.poc.util.POCConstants;
 import com.poc.util.TwitterClientFactory;
 import com.twitter.hbc.core.Client;
 
@@ -45,7 +49,17 @@ public class SourceTwitterTweetsOverToKafka {
 				twitterClient.stop();
 			}
 			if(msg != null) {
+				ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>(POCConstants.TWITTER_TWEETS_TOPIC, msg);
+				kafkaProducer.send(producerRecord, new Callback() {
+					
+					public void onCompletion(RecordMetadata metadata, Exception exception) {
+						if(exception != null) {
+							exception.printStackTrace();
+						}
+					}
+				});
 				System.out.println("Message -> "+msg);
+				System.out.println("*** Published successfully over to Kafka ***");
 			}
 		}
 	}
