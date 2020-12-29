@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
 
+//One consumer can connect to multiple topics
 public class KafkaDemoConsumer {
 
 	 public static void main(String[] args) {
