@@ -96,3 +96,11 @@ High Through put producer
 - Apply Compression (Snappy)
 - Apply Batching : batch.size=32kb, linger.ms=20ms
 ===============================
+
+===============================
+Producer default partitioner and how key are hashed
+- By default keys are hashed using "murmur2" algorithm
+- We can define our own partition class with help of property "partitioner.class"
+- murmur2 formula : targetPartition = Utils.abs(Utils.murmur2(record.key())) % numPartition;
+- Due to this same key will always go to same partition
+===============================
