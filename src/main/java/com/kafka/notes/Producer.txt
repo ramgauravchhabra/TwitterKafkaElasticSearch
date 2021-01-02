@@ -7,3 +7,19 @@
 // In ProducerRecord we can mention which Topic, Partition, Key, Value it need to go
 
 // Send Data
+===============================
+For producer 'acks' are very important
+acks=0 (no acks) - If broker goes offline  or exception happen we wont know and loose data
+acks=1 : default as of kafka 2.0 : leaders acks guranteed but replication is not a gurantee, if ack is not received producer may retry
+acks=all : Both leader and replica need to acknowledge
+
+- With acks=all, must also use "min.insync.replicas" : Can be set at broker or topic level
+- min.insync.replicas=2, implies that atleast 2 broker that are ISR(Include leader) must respond that they have data
+- If you use replication.factor=3, min.insync=2, acks=all, then you can only tolerate 1(one) broker going down otherwise producer will
+receive an exception in send
+- Exception thrown would be "NOT_ENOUGH_REPLICAS"
+===============================
+
+===============================
+Producer Retries
+===============================
