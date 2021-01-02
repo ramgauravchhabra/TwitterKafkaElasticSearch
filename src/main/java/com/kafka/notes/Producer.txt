@@ -22,4 +22,77 @@ receive an exception in send
 
 ===============================
 Producer Retries
+- In case of transient failure developers are expected to handle the exceptions
+- Example of transient failure is : NotEnoughReplicasException
+- There is a retry setting : "retries"
+- Defaults to 2147483647(MAX_INT) for kafka > 2.1
+- After how much time it retry, that can be configured by "retry.backoff.ms" : default value is 100ms
+- It means Kafka will retry to send in 100ms
+- With so much high value does that mean, will it retry for ever and the answer is no
+- It can be bounded by timeouts which is proposed in KIP-91
+	https://cwiki.apache.org/confluence/display/KAFKA/KIP-91+Provide+Intuitive+User+Timeouts+in+The+Producer
+- Property to control this is "delivery.timeout.ms" = 120000ms == 2 Minutes ()
+- "max.in.flight.requests.per.connection" : How many producer request can be made parallel to send request to single broker
+	- By defaults this is 5
+- Parallelism can create duplicate records and the answer to this is "Idempotemt Producers"	
+===============================
+
+===============================
+Idempotemt Producers (To avoid duplicate messages)
+Problem Statement: Producer can introduce duplicate messages in Kafka due to duplicate errors
+Solution is to use Idempotemt Producers
+Scenario: Producer send request, kafka commits and when acknowledged, producer did not received ack due to network error
+		  After this producer will retry and send same message again even though originally it was committed by kafka
+		  With Idempotemt Producers, event message have associated "Producer Request ID" which enable to identify Kafka that this is duplicate message and not save/commit again but send ack
+- Kafka-5494 ensure we have "max.in.flight.request"=5 and then also achieve ordering
+- How to make producer idempotetent, it is only one property
+		producerProps.put("enable.idempotence", true);	
+===============================
+
+===============================
+Message Compression
+- Producer usually send data that is text based, for example JSON data
+- In this case it is important to apply compression to the producer
+- Compression is enabled at producer level and does not require any config change in broker or consumer
+- "compression.type" can be 'none'(default), 'gzip', 'lz4', 'snappy'
+- Compression is more effective the bigger the batch of messages being sent over to Kafka
+	- Compression algo comparision : https://blog.cloudflare.com/squeezing-the-firehose/
+- Kafka supports 4 compression codecs: none, gzip, lz4 and snappy
+- Gzip sounded too expensive from the beginning (especially in Go), but Snappy should have been able to keep up. We profiled our producer and it was spending just 2.4% of CPU time in Snappy compression, never saturating a single core:
+- Now we were able to keep up with both Snappy and LZ4. Gzip was still out of the question and LZ4 had incompatibility issues between Kafka versions and our Go client, which left us with Snappy. This was a winner in terms of compression ratio and speed too, so we were not very disappointed by the lack of choice
+- Snaggy is the winner with good compression ratio and speed too
+- Producer first create batch and then send the message
+- With compression sending over to kafka and replication over to other brokers is lightining fast
+- Benefits:
+	- Much smaller request size(Compression ration by 4x)
+	- Faster to send data
+	- Better throughput
+	- Better disk utilization
+Disadvantage:
+	- Some CPU cycles in compression and decompression which is very very neglizible
+- GZIP is having higest compression ration but not fast
+- Need to verify which algo work for us
+- Consider linger.ms and batch.size to have bigger batches and therefore more compression and higher throughput		
+===============================
+
+===============================
+Producer Batching
+- Kafka tries to reduce latency and try to send record as soon as possible
+- It will have upto 5 request in flight, meaning upto 5 messages individually sent at same time
+- After this if more messages have to be sent while others are in flight, Kafka is smart and will start batching them while they wait to send them all once
+- This batching allow to increase through put
+- Batching can be controlled by below 2 properties:
+	-: linger.ms: Number of milliseconds a producer is willing to wait before sending batch out (default 0, means send right away)
+	-: batch.size: Maximum number of bytes that will be included in a batch. The default is 16 KB. Can be increase to like 32KB or 64KB to increase through put
+- If the batch is full before linger.ms then kafka send that right away
+- producer.send() is called but producer wait for linger.ms before finally sending over to kafka
+- One batch / One request (max size is batch size)
+- Most important: Batch is allocated per partition. so make sure you dont set it to a number too high , otherwise you will run waste memory
+- We can monitor average batch size matrix using  kafka producer matrix	
+===============================
+
+===============================
+High Through put producer
+- Apply Compression (Snappy)
+- Apply Batching : batch.size=32kb, linger.ms=20ms
 ===============================
