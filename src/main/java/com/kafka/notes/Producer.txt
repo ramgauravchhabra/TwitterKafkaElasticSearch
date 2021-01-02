@@ -104,3 +104,14 @@ Producer default partitioner and how key are hashed
 - murmur2 formula : targetPartition = Utils.abs(Utils.murmur2(record.key())) % numPartition;
 - Due to this same key will always go to same partition
 ===============================
+
+===============================
+Advanced properties
+- If producer produce faster then broker can take, the records will be buffered in producer memory
+- buffer.memory=33554432(32MB): the size of send buffer
+- If producer buffer is also full then send() method calls start blocking(wont return right away) as no place in buffer also to store data
+- To control this buffer timing, we have "max.block.ms"=60000: The time .send() will wait until thwowing exception. Exception is thrown when:
+	-: Producer buffer is full
+	-: Broker not accepting any new data
+	-: 60s elapsed
+===============================
