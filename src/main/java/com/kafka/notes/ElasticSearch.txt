@@ -1,0 +1,19 @@
+Health of Elastic Search Cluster
+# /_cat/health?v
+
+Number of nodes
+# /_cat/nodes?v
+
+- Indices is where we store data in Elastic Search
+
+Number of Indicies available to me in cluster
+# /_cat/indices?v
+Initially when we dont have any of our indicies available then result is below which includes system indices
+Answer to above query: health status index uuid pri rep docs.count docs.deleted store.size pri.store.size
+
+Create Indicies to store our data
+# Choose 'PUT'
+# /twitter
+
+- We need to insert records as 'documents' and in the form of JSON
+- To insert we need index/type/id like twitter/tweets/1
