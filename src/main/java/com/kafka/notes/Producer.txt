@@ -115,3 +115,11 @@ Advanced properties
 	-: Broker not accepting any new data
 	-: 60s elapsed
 ===============================
+ProdocerRecord may contain:
+	Topic
+	partition
+	timestamp
+	key
+	value
+It will be send through KafkaProducer	
+===============================

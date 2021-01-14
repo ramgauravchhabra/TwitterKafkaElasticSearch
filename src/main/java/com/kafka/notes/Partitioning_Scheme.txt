@@ -1,0 +1,1 @@
+If no scheme is defined, producer will use round robin scheme to produce content over multiple partition of single topic

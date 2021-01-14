@@ -1,0 +1,16 @@
+Transactions and Commit Logs
+- Are source of truth
+- Physically stored and maintained
+- Higher order data structures derive from log:
+	-: Tables, Indexes, Views etc.
+- It can also be used in point of recovery
+
+------------------------------------------------
+- Apache Kafka is publish/subscribe messaging rethought as a distributed commit log
+- Each topic has one or more partitions
+- Partition = Log
+- .log and .index file will be created in broker at : /tmp/kafka-logs/{topic}-{partition}
+- Sample : /tmp/kafka-logs/my_topic-0 : It contains log for single partition
+- Each partition must fit entirely on one machine
+- In general, the scalability of Apache Kafka is determined by the number of partitions being managed by multiple broker nodes
+------------------------------------------------

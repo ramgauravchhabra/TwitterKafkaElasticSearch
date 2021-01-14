@@ -1,0 +1,32 @@
+- When we give command to create topic with number of partitions, it will be handled by zookeeper as 
+it is responsible to hold all meta data
+- Zookeeper will see how many brokers are available and who can be made leader of single partition
+- Assign partition to leaders
+- Status will be send to zookeeper on continous basis
+- Producer should have knowledge to atleast one broker for sending messages
+- Each broker knows which partition leader hold by which broker
+
+- Producer send record to any broker, get metadata and then finally send record to actual partition on specific broker
+
+- Consumer confirm from zookeeper which broker owns which partition and get additioanal metadata
+
+Partition Overhead
+- It is not like we should create any number of partitions
+- The more partition the greater zookeeper overhead as need to monitor them all
+- Message ordering can be complex
+- Leader fail-over time will be long with large partitions
+
+In case of broker failure, it is zookeeper responsiblity to choose another broker  
+- Create topic command goes to zookeeper first and then drill down to brokers
+
+ISR = In sync replica
+
+ Viewing Topic State
+ use --describe command
+ 
+ If we want to run multiple brokers on single machine then in config folder we need to make property files like server-0.properties
+ server-1.properties, server-2.properties
+ 
+ - Replica vs In-Sync Replica
+ Lets say we have replication factor as 3. Replica - 0,1,2 and ISR = 0,1,2
+ Now broker 1 went down then, Replica - 0,1,2 and ISR = 0,2 : This mean quorum is unhealthy

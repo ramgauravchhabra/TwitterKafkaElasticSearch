@@ -1,0 +1,2 @@
+kafka-clients.jar hold api for both Producer and Consumer
+KafkaProducer and ProducerRecord
