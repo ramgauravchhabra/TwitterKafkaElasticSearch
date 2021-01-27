@@ -22,3 +22,14 @@ Solution: with 0.10 a new product introduced Apache Kafka Connect' introduced
 ===============================================
 
 3. Challenge with fast data
+	-Some of the platforms like Apache Storm, Apache Spark, Cassandra etc.
+	- Kafka is found in the middle
+	- Think of like
+		-: Apache Storm -> Kafka -> Cassandra
+	- Here lot of things to maintain
+	- Problem would be consistencey, maintenance and integrating
+	- Kafka in between need lot of producers and consumers both on left and right hand side
+		-: Consume from Apache Storm and Produce in Cassandra
+		
+Solution: New library to handle Streaming systems is being introduced and known as "Kafka Streams"
+Kafka Streams is a client library and work with Kafka Cluster			
