@@ -9,4 +9,67 @@ seek and assign
 	--from-begining
 	--earliest
 	
-When there is a failure in broker, producer is totally unaware but consumer may get exception as warning only		
+When there is a failure in broker, producer is totally unaware but consumer may get exception as warning only
+
+=====================================
+Manual Partition Assignment
+- Use of TopicPartition
+- use method assign() instead of subscribe()		
+=====================================
+Kafka consumer poll() method is single threaded
+=====================================
+2 important properties for consumer
+- enable.auto.commit=true
+- auto.commit.interval=5000(default value)
+=====================================
+Offset Behavior
+- Read != Commit
+- Offset commit behavior is configurable
+	- enable.auto.commit = true(default)
+	- auto.commit.interval.ms = 5000(default) but can be configurable
+	- auto.offset.reset = "latest" (default)
+		- Possible value also:
+			-  'earliest'
+			-  'none'
+- Kafka store all consumer offsets related details in special topic named '__consumer_offsets', --describe command use this topic only to display information
+- Offset Managment
+	-: Automatic vs Manual
+	-: By default it is automatic
+=====================================
+Offset Management
+Automatic vs Manual
+- enable.auto.commit = false
+	-: Full control of offset commits
+	-: It consist of 2 methods:
+		-: commitSync() : Commit when you know you are done : On failure it retry also (retry.backoff.ms)
+		-: commitAsync() : non blocking and dont retry as this is async : have callback option
+- In case of enable.auto.commit = 'true' it will automatically commit and treat it as done when auto commit interval expires 			
+=====================================
+How to commit offset means till what point we have read
+- commit() -> ConsumerCordinator -> update '__consumer_offsets' topic
+=====================================
+Scaling-out consumers
+- poll() process is single threaded operation
+- Solution is consumer group
+	-: Independent consumers working as a team
+	-: only need to use "group.id" setting as a config property
+	-: Each consumer sending heartbeat to zookeeper: GroupCordinator
+		-: heartbeat.interval.ms = 3000
+		-: session.timeout.ms = 30000
+=====================================
+Consumer performance and effifiency
+- fetch.min.bytes: Minimum bytes must be return from the poll
+- max.fetch.wait.ms : Wait max time if it not able to get data to breach the threshold which are actually set by 'fetch.min.bytes'
+- max.partition.fetch.bytes: To ensure we are not polling more data then a consumer can process
+- max.poll.records:  To ensure we are not polling more records
+- 'max.partition.fetch.bytes' and 'max.poll.records' can be used as throttling data at consumer side 
+=====================================
+Flow Control
+- There are api available like pause() and resume() to control reading of data from topics
+- This is being used when single consumer has to read from multiple consumers
+=====================================
+Rebalance Listeners
+Get notified in cae of rebalancing and required if we are doing rebalancing ourself
+=====================================
+
+=====================================

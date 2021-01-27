@@ -123,3 +123,18 @@ ProdocerRecord may contain:
 	value
 It will be send through KafkaProducer	
 ===============================
+
+===============================
+Producer Partition Strategy
+- Direct
+- Round Robin
+- Key Mod Hash
+- Custom : "partitioner_class_config.class" property setting
+
+First check if partition is given to which it needs to go, then check for key to determine the partition
+===============================
+
+===============================
+Batching conrolled by batch.size which means it is not by number of messages but by overall size
+create buffer in OS page cache
+===============================

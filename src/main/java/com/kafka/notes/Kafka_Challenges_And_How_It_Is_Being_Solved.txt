@@ -1,0 +1,24 @@
+1. Challenge in governance and evolution
+- How to serialize and deserialize in generic form
+
+Solution is : Kafka Schema Registry and leverage Apache AVRO serialization format
+
+===============================================
+
+2. Challenges with consistency and productivity
+- Everybody has to write code for consuming and then persisting
+- everybody need to re-invent the when
+- CHallenge to integrate data source and targets
+- Left to individual to build all those
+- Each effort take cost and maintanence
+
+Solution: with 0.10 a new product introduced Apache Kafka Connect' introduced
+- Common framework for integration
+- Goal is to standardized : for producer and consumer applications
+- This is framework
+- 50+ connectors are available as of now
+- Confluent company created lot of connectors and created a platform called "Connector Hub" 
+- Anybody can contribute to this
+===============================================
+
+3. Challenge with fast data
