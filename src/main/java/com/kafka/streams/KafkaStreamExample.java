@@ -31,6 +31,7 @@ public class KafkaStreamExample {
 
 		StreamsBuilder builder = new StreamsBuilder();
 
+		// Topic name is parameter : This is also being used in KafkaProducerForStreams.java
 		KStream<String, String> source = builder.stream("streams-plaintext-input");
 
 		KTable counts = source
@@ -38,7 +39,7 @@ public class KafkaStreamExample {
 				.groupBy((key, value) -> value)
 				.count();
 
-		// need to override value serde to Long type
+		// Streaming back to Kafka Topic
 		counts.toStream().to("streams-wordcount-output", Produced.with(Serdes.String(), Serdes.Long()));
 
 		final KafkaStreams streams = new KafkaStreams(builder.build(), props);
