@@ -1,0 +1,4 @@
+Data Stream = Kafka Topic + Data Governance
+Clean up policy
+	-: Delete records based on time or size
+	-: Compact : Similar to UPSERT functionlity, ie. if not exist then insert else update

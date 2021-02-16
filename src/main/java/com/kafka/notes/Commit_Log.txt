@@ -14,3 +14,7 @@ Transactions and Commit Logs
 - Each partition must fit entirely on one machine
 - In general, the scalability of Apache Kafka is determined by the number of partitions being managed by multiple broker nodes
 ------------------------------------------------
+- Commit logs need to be splitted into Segments
+- It roll over by
+	-: Space like every 1GB
+	-: Time like every 1HR 

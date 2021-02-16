@@ -1,0 +1,6 @@
+ - KafkaStreams enables us to consume from Kafka topics, analyze or transform data, and potentially, send it to another Kafka topic
+ 
+ Good Read
+ - https://www.confluent.io/blog/kafka-streams-tables-part-1-event-streaming/
+ - https://supergloo.com/kafka-streams/
+ - https://www.michael-noll.com/blog/2018/04/05/of-stream-and-tables-in-kafka-and-stream-processing-part1/
