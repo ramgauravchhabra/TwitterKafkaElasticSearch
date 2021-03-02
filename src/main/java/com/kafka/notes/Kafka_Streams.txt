@@ -4,3 +4,64 @@
  - https://www.confluent.io/blog/kafka-streams-tables-part-1-event-streaming/
  - https://supergloo.com/kafka-streams/
  - https://www.michael-noll.com/blog/2018/04/05/of-stream-and-tables-in-kafka-and-stream-processing-part1/
+ 
+ ------------------ Code to read from one topic, apply logic and stream back to another topic --------------
+ StreamsBuilder builder = new StreamsBuilder();
+
+		// Topic name is parameter : This is also being used in KafkaProducerForStreams.java
+		KStream<String, String> source = builder.stream("streams-plaintext-input");
+
+		KTable counts = source
+				.flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split(" ")))
+				.groupBy((key, value) -> value)
+				.count();
+
+		// Streaming back to Kafka Topic
+		counts.toStream().to("streams-wordcount-output", Produced.with(Serdes.String(), Serdes.Long()));
+------------------ Code to read from one topic, apply logic and stream back to another topic --------------
+
+- StreamsBuilder : Provide the high-level Kafka Streams DSL to specify a Kafka Streams topology
+- StreamsBuilder for defining a topology
+- KStream for working with record streams
+- KTable for working with changelog streams
+- GlobalKTable for working with global changelog streams
+
+- The Kafka Streams DSL is the high-level API that enables you to build Kafka Streams applications quickly. The high-level API is very well thought out, and there are methods to handle most stream-processing needs out of the box, so you can create a sophisticated stream-processing program without much effort. At the heart of the high-level API is the KStream object, which represents the streaming key/value pair records.
+
+Sample Topology
+'src-topic' -> Source Processor -> Upper case Processor -> Sink Processor -> 'out-topic'
+
+- Built-in abstractions for streams and tables in the form of KStream, KTable, and GlobalKTable. 
+
+-----------------------
+Events are captured by an event streaming platform into event streams. An event stream records the history of what has happened in the world as a sequence of events. An example stream is a sales ledger or the sequence of moves in a chess match.
+
+Compared to an event stream, a table represents the state of the world at a particular point in time, typically “now.” An example table is total sales or the current state of the board in a chess match. A table is a view of an event stream, and this view is continuously being updated whenever a new event is captured.
+
+Table represent the state as of 'Now
+
+Streams and tables in Kafka differ in a few ways, notably with regard to whether their contents can be changed, i.e., whether they are mutable. (If you are a Kafka Streams user: when I say table I refer to what is called a KTable in Kafka Streams. I am not talking about state stores, which we will cover later on.)'
+
+- Kafka streams API transforms and enrich data
+	- support per second stream processing
+	- no batching concept
+	- Every record came and processed
+- Kafka stream provide facility of windowing
+- Kafka stream part of our code
+- No seperate cluster is required
+- Seperate is part of our application
+- Kafka stream is part of open source kafka project
+- Kafka Stream runs in "Your App" and connect with Kafka cluster
+- Stream applications do not run on brokers and it will run on "your app"
+- Stream processing work will be done in your application
+- Same way consumer groups : We can have multiple "your app" instances which will have multiple instances of Stream API to share the load	
+-----------------------
+What is Serdes
+- Use Serializers and Deserialezers(Serdes) : SERializer and DESializer
+-----------------------
+- KStream is an abstraction over Stream API
+- If you want a stream of records, use Kstream => Unbounded sequence of facts
+- if you want a changelog with only the latest value for a given key, use KTable => evolving facts
+-----------------------
+- We can join Stream and Table like in RDBMS we join 2 tables
+- We can join Stream and KTable and generate/made out a new stream
