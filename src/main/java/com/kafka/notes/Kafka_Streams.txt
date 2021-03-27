@@ -65,3 +65,27 @@ What is Serdes
 -----------------------
 - We can join Stream and Table like in RDBMS we join 2 tables
 - We can join Stream and KTable and generate/made out a new stream
+-----------------------
+Plain consumer API vs Kafka Streams
+- ksqlDB is built on top of Kafka's Streams API, and it too comes with first-class support for Streams and Tables.
+- Kafka's Streams library (https://kafka.apache.org/documentation/streams/) is built on top of the Kafka producer and consumer clients. Kafka Streams is significantly more powerful and also more expressive than the plain clients.
+- Here are some of the features of the Kafka Streams API, most of which are not supported by the consumer client (it would require you to implement the missing features yourself, essentially re-implementing Kafka Streams).
+	-: Supports exactly-once processing semantics via Kafka transactions
+	-: Supports fault-tolerant stateful (as well as stateless, of course) processing including streaming joins, aggregations, and windowing. In other words, it supports management of your application's processing state out-of-the-box
+	-: Supports event-time processing as well as processing based on processing-time and ingestion-time. It also seamlessly processes out-of-order data
+	-: Has first-class support for both streams and tables, which is where stream processing meets databases; in practice, most stream processing applications need both streams AND tables for implementing their respective use cases
+	-: Supports interactive queries (also called 'queryable state') to expose the latest processing results to other applications and services via a request-response API
+	-: Has its own testing kit for unit and integration testing.
+	-: Beyond Kafka Streams, you can also use the event streaming database ksqlDB to process your data in Kafka
+	-: ksqlDB is built on top of Kafka Streams
+	-: It supports essentially the same features as Kafka Streams, but you write streaming SQL instead of Java or Scala
+	-: Programmatically, you can interact with ksqlDB via a CLI or a REST API; it also has a native Java client in case you don't want to use REST
+	-: Yes, the Kafka Streams API can both read data as well as write data to Kafka
+	-: It supports Kafka transactions, so you can e.g. read one or more messages from one or more topic(s), optionally update processing state if you need to, and then write one or more output messages to one or more topics—all as one atomic operation
+	-: Yes, you could write your own consumer application -- as I mentioned, the Kafka Streams API uses the Kafka consumer client (plus the producer client) itself -- but you'd have to manually implement all the unique features that the Streams API provides
+	-:
+	-:
+	-:
+	-:
+	-:
+-----------------------
